@@ -1,0 +1,15 @@
+# LIMBAHIN — robots.txt
+User-agent: *
+Allow: /
+
+# Private portal & internal tools: not for search results
+Disallow: /app/
+Disallow: /login
+Disallow: /ast/
+Disallow: /ast2/
+Disallow: /custform
+Disallow: /hasil
+Disallow: /tambahreferal
+Disallow: /settings/
+
+Sitemap: https://www.mediacahayacerah.com/sitemap.xml

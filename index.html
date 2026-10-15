@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon / browser-tab icon (also used for Android home-screen + Apple touch icon). All
+         generated from the same 4-arrow LIMBAHIN mark used everywhere else in the app
+         (src/assets/logoBadgeBase64.js) so it can never drift out of sync again. -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#1a1a2e" />
+
+    <!-- Default/fallback tags for the very first paint and for any crawler that doesn't execute
+         JS — src/components/Seo.jsx sets title/description/canonical per page once React
+         mounts, for crawlers that DO run JS (Googlebot does). This is what search engines and
+         social-share bots see before that happens. -->
+    <title>Pengelolaan & Pengangkutan Limbah B3 Jabodetabek | LIMBAHIN</title>
+    <meta
+      name="description"
+      content="LIMBAHIN: jasa pengangkutan limbah B3 berizin KLHK di Jakarta, Bekasi, Depok, Bogor & Cikarang. Konsultasi gratis."
+    />
+    <!-- NO hard-coded <link rel="canonical"> and NO og:url here, on purpose. This file is served
+         for EVERY route, so a canonical here told Google that every page without its own tag
+         (login, portal, forms, 404s...) was a copy of the homepage ("Alternate page with proper
+         canonical tag"). src/components/Seo.jsx sets the correct canonical/og:url per page. -->
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:site_name" content="LIMBAHIN" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pengelolaan & Pengangkutan Limbah B3 Jabodetabek | LIMBAHIN" />
+    <meta
+      property="og:description"
+      content="LIMBAHIN: jasa pengangkutan limbah B3 berizin KLHK di Jakarta, Bekasi, Depok, Bogor & Cikarang. Konsultasi gratis."
+    />
+    <meta property="og:image" content="https://www.mediacahayacerah.com/icon-512.png" />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Organization + Service schema, statically present so it's there even without JS.
+         `logo` must be a real, fetchable image URL for Google to use it (a data: URI won't
+         validate) — this now points at the same favicon set above. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "LIMBAHIN",
+        "alternateName": "PT Media Cahaya Cerah",
+        "url": "https://www.mediacahayacerah.com",
+        "logo": "https://www.mediacahayacerah.com/icon-512.png",
+        "image": "https://www.mediacahayacerah.com/icon-512.png",
+        "email": "cs@mediacahayacerah.com",
+        "telephone": "+6281517005533",
+        "sameAs": [
+          "https://www.instagram.com/limbahin_mcc",
+          "https://www.facebook.com/profile.php?id=61593783071940",
+          "https://www.youtube.com/@limbahin_mcc",
+          "https://id.linkedin.com/company/mediacahayacerah"
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Ruko Premium Icon City Blok B23, Jln. Boulevard Raya Deltamas No.189",
+          "addressLocality": "Cikarang Pusat",
+          "addressRegion": "Jawa Barat",
+          "postalCode": "17530",
+          "addressCountry": "ID"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "LIMBAHIN — PT Media Cahaya Cerah",
+        "image": "https://www.mediacahayacerah.com/icon-512.png",
+        "url": "https://www.mediacahayacerah.com",
+        "telephone": "+6281517005533",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Ruko Premium Icon City Blok B23, Jln. Boulevard Raya Deltamas No.189",
+          "addressLocality": "Cikarang Pusat",
+          "addressRegion": "Jawa Barat",
+          "postalCode": "17530",
+          "addressCountry": "ID"
+        },
+        "geo": { "@type": "GeoCoordinates", "latitude": -6.358179, "longitude": 107.179844 },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "17:00"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": "Pengelolaan Limbah B3",
+        "name": "Pengelolaan dan Pengangkutan Limbah B3",
+        "provider": { "@type": "Organization", "name": "LIMBAHIN" },
+        "areaServed": ["Jakarta", "Bogor", "Depok", "Tangerang", "Bekasi", "Cikarang"],
+        "url": "https://www.mediacahayacerah.com"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Seen only by clients that don't run JS (this is a React SPA) — an SEO checker that fetches
+         the raw HTML (e.g. Seobility) falls in this bucket, and so does anything reading the page
+         without a browser. Real visitors with JS enabled never see this; React replaces #root's
+         contents immediately. Kept reasonably thorough (not just one line) since a checker's
+         "thin content" warning is measuring exactly this text. -->
+    <noscript>
+      <p role="heading" aria-level="1" style="font-size:1.5em;font-weight:bold;">LIMBAHIN — Pengelolaan &amp; Pengangkutan Limbah B3 Jabodetabek</p>
+      <p>
+        LIMBAHIN, unit usaha PT Media Cahaya Cerah, menyediakan jasa pengelolaan dan pengangkutan
+        limbah B3 (Bahan Berbahaya dan Beracun) yang berizin resmi dari Kementerian Lingkungan
+        Hidup dan Kehutanan (KLHK). Kami melayani perusahaan, rumah sakit, klinik, hotel, dan
+        fasilitas industri di seluruh wilayah Jabodetabek — Jakarta, Bogor, Depok, Tangerang,
+        Bekasi, dan Cikarang — dengan kantor operasional yang berbasis langsung di Cikarang Pusat.
+      </p>
+      <p role="heading" aria-level="2" style="font-weight:bold;">Jenis Limbah yang Kami Kelola</p>
+      <p>
+        Layanan kami mencakup pengelolaan limbah medis (jarum suntik, APD, kassa terkontaminasi),
+        limbah industri (oli bekas, solvent, bahan kimia proses), limbah komersial (baterai bekas,
+        lampu TL, elektronik rusak), serta limbah produk dan bahan (barang reject, produk
+        kedaluwarsa). Setiap jenis limbah ditangani sesuai karakteristiknya masing-masing, mulai
+        dari pemilahan di sumber hingga pemusnahan akhir di fasilitas berizin.
+      </p>
+      <p role="heading" aria-level="2" style="font-weight:bold;">Manifest Elektronik dan Sertifikat Pemusnahan</p>
+      <p>
+        Setiap pengangkutan limbah B3 yang kami lakukan tercatat melalui Festronik, sistem manifest
+        elektronik resmi KLHK, sehingga perusahaan Anda memiliki bukti kepatuhan hukum yang sah dan
+        dapat diverifikasi kapan saja. Setelah limbah dimusnahkan, klien menerima Sertifikat
+        Pemusnahan (Certificate of Destruction/CoD) sebagai dokumentasi akhir.
+      </p>
+      <p role="heading" aria-level="2" style="font-weight:bold;">Wilayah Layanan</p>
+      <p>
+        Kami melayani pengelolaan limbah B3 di Jakarta, Bekasi, Depok, Bogor, Tangerang, dan
+        Cikarang, dengan waktu respons tercepat untuk kawasan industri di sekitar Cikarang.
+      </p>
+      <nav>
+        <a href="https://www.mediacahayacerah.com/">Beranda</a> |
+        <a href="https://www.mediacahayacerah.com/harga-limbah">Daftar Harga</a> |
+        <a href="https://www.mediacahayacerah.com/layanan/jenis-limbah">Jenis Limbah</a> |
+        <a href="https://www.mediacahayacerah.com/layanan/partner-klien">Partner &amp; Klien</a> |
+        <a href="https://www.mediacahayacerah.com/artikel">Artikel</a> |
+        <a href="https://www.mediacahayacerah.com/artikel/perizinan">Perizinan Limbah B3</a> |
+        <a href="https://www.mediacahayacerah.com/artikel/regulasi">Regulasi</a> |
+        <a href="https://www.mediacahayacerah.com/artikel/layanan-kami/pengelolaan-limbah-b3-jakarta">Limbah B3 Jakarta</a> |
+        <a href="https://www.mediacahayacerah.com/artikel/layanan-kami/pengelolaan-limbah-b3-bekasi">Limbah B3 Bekasi</a> |
+        <a href="https://www.mediacahayacerah.com/artikel/layanan-kami/pengelolaan-limbah-b3-depok">Limbah B3 Depok</a> |
+        <a href="https://www.mediacahayacerah.com/artikel/layanan-kami/pengelolaan-limbah-b3-cikarang">Limbah B3 Cikarang</a> |
+        <a href="https://www.mediacahayacerah.com/tentang">Tentang Kami</a> |
+        <a href="https://www.mediacahayacerah.com/hubungi">Hubungi Kami</a>
+      </nav>
+    </noscript>
+
+    <!-- Analytics tracking — not wired up because there's no Measurement ID to put here yet.
+         Get one free at https://analytics.google.com (GA4 property), then uncomment both lines
+         below and replace G-XXXXXXXXXX with it. -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    -->
+
+    <!-- Facebook Pixel — same situation: needs a Pixel ID from
+         https://business.facebook.com/events_manager before this does anything. Uncomment and
+         replace YOUR_PIXEL_ID once you have one. -->
+    <!--
+    <script>
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', 'YOUR_PIXEL_ID');
+      fbq('track', 'PageView');
+    </script>
+    -->
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

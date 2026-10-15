@@ -1,0 +1,15 @@
+{
+  "name": "limbahin-supabase-backfill",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-time script to bulk-load the limbahin Google Sheets data into Supabase.",
+  "main": "backfill.js",
+  "scripts": {
+    "backfill": "node backfill.js"
+  },
+  "dependencies": {
+    "googleapis": "^140.0.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5"
+  }
+}

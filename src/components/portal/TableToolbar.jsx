@@ -1,13 +1,8 @@
 import React from "react";
-import { Search } from "lucide-react";
+import { Search, ArrowUpDown } from "lucide-react";
 import ClearableInput from "./ClearableInput";
 import SortToggle from "./SortToggle";
 
-// Universal search + sort + count bar used above every portal table, so every
-// table (Pickup, Invoice, BA, Komisi, Perizinan, ...) looks and behaves the
-// same way instead of each having its own one-off layout.
-//
-// sorts: [{ key, label, active, direction, onClick }]
 export default function TableToolbar({
   shownCount,
   totalCount,
@@ -16,6 +11,9 @@ export default function TableToolbar({
   onSearchChange,
   searchPlaceholder = "Cari...",
   sorts = [],
+  sortValue,
+  onSortChange,
+  sortOptions = [],
   extra = null,
 }) {
   return (
@@ -25,6 +23,7 @@ export default function TableToolbar({
       </span>
       <div className="flex items-center gap-2 flex-wrap">
         {extra}
+
         {onSearchChange && (
           <ClearableInput
             icon={Search}
@@ -34,15 +33,34 @@ export default function TableToolbar({
             className="w-40 sm:w-48"
           />
         )}
-        {sorts.map((s) => (
-          <SortToggle
-            key={s.key}
-            label={s.label}
-            active={s.active}
-            direction={s.direction}
-            onClick={s.onClick}
-          />
-        ))}
+
+        {/* Minimalistic unified Sort Dropdown if sortValue/sortOptions provided */}
+        {sortOptions.length > 0 && onSortChange ? (
+          <div className="relative">
+            <ArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+            <select
+              value={sortValue}
+              onChange={(e) => onSortChange(e.target.value)}
+              className="h-10 pl-8 pr-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-xs outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500/20 transition appearance-none cursor-pointer"
+            >
+              {sortOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          sorts.map((s) => (
+            <SortToggle
+              key={s.key}
+              label={s.label}
+              active={s.active}
+              direction={s.direction}
+              onClick={s.onClick}
+            />
+          ))
+        )}
       </div>
     </div>
   );

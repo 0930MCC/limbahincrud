@@ -8,7 +8,7 @@ import TableScrollShell from "./TableScrollShell";
 import FileLinkButtons from "./FileLinkButtons";
 import { EmptyState } from "./Loader";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { ChevronRight, Filter, ArrowUp, ArrowDown, ArrowUpDown, Calendar, DollarSign, RotateCcw, SlidersHorizontal } from "lucide-react";
+import { ChevronRight, Filter, ArrowUp, ArrowDown, ArrowUpDown, Calendar, DollarSign, RotateCcw, SlidersHorizontal, Check } from "lucide-react";
 
 function statusPill(status) {
   const paid = /paid|bayar|lunas/i.test(status || "") && !/not paid|belum/i.test(status || "");
@@ -47,28 +47,32 @@ const AMOUNT_STOPS = [
 export default function InvoiceTable({ invoices, showCommission = false }) {
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
-  const [jenisFilter, setJenisFilter] = useState("all");
-  const [periodeFilter, setPeriodeFilter] = useState("all");
+  const [selectedJenis, setSelectedJenis] = useState([]);
+  const [selectedPeriodes, setSelectedPeriodes] = useState([]);
   const [amountRangeIndex, setAmountRangeIndex] = useState([0, AMOUNT_STOPS.length - 1]);
   const [sort, setSort] = useState({ key: "date", dir: "desc" });
 
   const jenisOptions = useMemo(() => {
-    const set = new Set();
+    const map = new Map();
     invoices.forEach((inv) => {
       const v = String(inv[COL.I_JENIS] || "").trim();
-      if (v) set.add(v);
+      if (v) map.set(v, (map.get(v) || 0) + 1);
     });
-    return Array.from(set).sort((a, b) => a.localeCompare(b));
+    return Array.from(map.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [invoices]);
 
   // Extracts base periods (e.g., 2606-1 and 2606-2 merge into 2606)
   const periodOptions = useMemo(() => {
-    const set = new Set();
+    const map = new Map();
     invoices.forEach((inv) => {
       const baseP = getBasePeriod(inv[COL.I_PERIODE]);
-      if (baseP) set.add(baseP);
+      if (baseP) map.set(baseP, (map.get(baseP) || 0) + 1);
     });
-    return Array.from(set).sort((a, b) => b.localeCompare(a, undefined, { numeric: true, sensitivity: "base" }));
+    return Array.from(map.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.name.localeCompare(a.name, undefined, { numeric: true, sensitivity: "base" }));
   }, [invoices]);
 
   const minAmountValue = AMOUNT_STOPS[amountRangeIndex[0]].value;
@@ -77,13 +81,15 @@ export default function InvoiceTable({ invoices, showCommission = false }) {
 
   const byFilters = useMemo(() => {
     return invoices.filter((inv) => {
-      // 1. Jenis Filter
-      if (jenisFilter !== "all" && String(inv[COL.I_JENIS] || "").trim() !== jenisFilter) {
-        return false;
+      // 1. Multi-select Jenis Filter
+      if (selectedJenis.length > 0) {
+        const invJenis = String(inv[COL.I_JENIS] || "").trim();
+        if (!selectedJenis.includes(invJenis)) return false;
       }
-      // 2. Base Periode Filter (2606 matches 2606, 2606-1, 2606-2)
-      if (periodeFilter !== "all" && getBasePeriod(inv[COL.I_PERIODE]) !== periodeFilter) {
-        return false;
+      // 2. Multi-select Base Periode Filter (2606 matches 2606, 2606-1, 2606-2)
+      if (selectedPeriodes.length > 0) {
+        const baseP = getBasePeriod(inv[COL.I_PERIODE]);
+        if (!selectedPeriodes.includes(baseP)) return false;
       }
       // 3. Amount Range Slider Filter
       const amt = parseNum(inv[COL.I_GRANDTOTAL]);
@@ -92,7 +98,7 @@ export default function InvoiceTable({ invoices, showCommission = false }) {
 
       return true;
     });
-  }, [invoices, jenisFilter, periodeFilter, minAmountValue, maxAmountValue]);
+  }, [invoices, selectedJenis, selectedPeriodes, minAmountValue, maxAmountValue]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return byFilters;
@@ -155,13 +161,25 @@ export default function InvoiceTable({ invoices, showCommission = false }) {
     setSort({ key, dir });
   };
 
-  const hasActiveFilters = jenisFilter !== "all" || periodeFilter !== "all" || isAmountFiltered || search.trim() !== "";
+  const hasActiveFilters = selectedJenis.length > 0 || selectedPeriodes.length > 0 || isAmountFiltered || search.trim() !== "";
 
   const resetAllFilters = () => {
-    setJenisFilter("all");
-    setPeriodeFilter("all");
+    setSelectedJenis([]);
+    setSelectedPeriodes([]);
     setAmountRangeIndex([0, AMOUNT_STOPS.length - 1]);
     setSearch("");
+  };
+
+  const togglePeriodSelection = (pName) => {
+    setSelectedPeriodes((prev) =>
+      prev.includes(pName) ? prev.filter((item) => item !== pName) : [...prev, pName]
+    );
+  };
+
+  const toggleJenisSelection = (jName) => {
+    setSelectedJenis((prev) =>
+      prev.includes(jName) ? prev.filter((item) => item !== jName) : [...prev, jName]
+    );
   };
 
   const HeaderSortIcon = ({ colKey }) => {
@@ -174,6 +192,18 @@ export default function InvoiceTable({ invoices, showCommission = false }) {
     const minStr = AMOUNT_STOPS[amountRangeIndex[0]].display;
     const maxStr = AMOUNT_STOPS[amountRangeIndex[1]].display;
     return `${minStr} – ${maxStr}`;
+  };
+
+  const getPeriodButtonText = () => {
+    if (selectedPeriodes.length === 0) return "Semua Periode";
+    if (selectedPeriodes.length === 1) return `Periode: ${selectedPeriodes[0]}`;
+    return `Periode (${selectedPeriodes.length})`;
+  };
+
+  const getJenisButtonText = () => {
+    if (selectedJenis.length === 0) return "Semua Jenis";
+    if (selectedJenis.length === 1) return selectedJenis[0];
+    return `Jenis (${selectedJenis.length})`;
   };
 
   if (invoices.length === 0) return <EmptyState label="Belum ada invoice." />;
@@ -192,38 +222,130 @@ export default function InvoiceTable({ invoices, showCommission = false }) {
         sortOptions={sortOptions}
         extra={
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Base Periode Filter (2606 merges 2606-1 and 2606-2) */}
+            {/* Multi-select Checkbox Popover for Periode Filter */}
             {periodOptions.length > 0 && (
-              <div className="relative">
-                <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
-                <select
-                  value={periodeFilter}
-                  onChange={(e) => setPeriodeFilter(e.target.value)}
-                  className="h-10 pl-8 pr-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-xs outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500/20 transition appearance-none cursor-pointer font-medium"
-                >
-                  <option value="all">Semua Periode</option>
-                  {periodOptions.map((p) => (
-                    <option key={p} value={p}>Periode {p}</option>
-                  ))}
-                </select>
-              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className={`h-10 px-3 rounded-lg border text-xs font-medium flex items-center gap-2 transition ${
+                      selectedPeriodes.length > 0
+                        ? "border-brand-500 bg-brand-50 dark:bg-brand-600/10 text-brand-600 dark:text-brand-400 ring-2 ring-brand-500/20 font-semibold"
+                        : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200"
+                    }`}
+                  >
+                    <Calendar className={`w-3.5 h-3.5 ${selectedPeriodes.length > 0 ? "text-brand-600 dark:text-brand-400" : "text-slate-400"}`} />
+                    <span>{getPeriodButtonText()}</span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-3" align="start">
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                      <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        Filter Periode ({periodOptions.length})
+                      </span>
+                      {selectedPeriodes.length > 0 && (
+                        <button
+                          onClick={() => setSelectedPeriodes([])}
+                          className="text-[11px] text-brand-600 dark:text-brand-400 hover:underline font-medium"
+                        >
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                    <div className="max-h-56 overflow-y-auto space-y-1 pr-1">
+                      {periodOptions.map((p) => {
+                        const isChecked = selectedPeriodes.includes(p.name);
+                        return (
+                          <label
+                            key={p.name}
+                            onClick={() => togglePeriodSelection(p.name)}
+                            className="flex items-center justify-between p-2 rounded-md hover:bg-slate-50 dark:hover:bg-slate-800/60 cursor-pointer text-xs transition"
+                          >
+                            <div className="flex items-center gap-2">
+                              <div
+                                className={`w-4 h-4 rounded border flex items-center justify-center transition ${
+                                  isChecked
+                                    ? "bg-brand-600 border-brand-600 text-white"
+                                    : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
+                                }`}
+                              >
+                                {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
+                              </div>
+                              <span className={isChecked ? "font-medium text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"}>
+                                Periode {p.name}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-slate-400 font-mono">({p.count})</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
 
-            {/* Jenis Invoice Filter */}
+            {/* Multi-select Checkbox Popover for Jenis Invoice Filter */}
             {jenisOptions.length > 0 && (
-              <div className="relative">
-                <Filter className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
-                <select
-                  value={jenisFilter}
-                  onChange={(e) => setJenisFilter(e.target.value)}
-                  className="h-10 pl-8 pr-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-xs outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500/20 transition appearance-none cursor-pointer font-medium"
-                >
-                  <option value="all">Semua Jenis</option>
-                  {jenisOptions.map((j) => (
-                    <option key={j} value={j}>{j}</option>
-                  ))}
-                </select>
-              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className={`h-10 px-3 rounded-lg border text-xs font-medium flex items-center gap-2 transition ${
+                      selectedJenis.length > 0
+                        ? "border-brand-500 bg-brand-50 dark:bg-brand-600/10 text-brand-600 dark:text-brand-400 ring-2 ring-brand-500/20 font-semibold"
+                        : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200"
+                    }`}
+                  >
+                    <Filter className={`w-3.5 h-3.5 ${selectedJenis.length > 0 ? "text-brand-600 dark:text-brand-400" : "text-slate-400"}`} />
+                    <span>{getJenisButtonText()}</span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-72 p-3" align="start">
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                      <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        Filter Jenis Invoice ({jenisOptions.length})
+                      </span>
+                      {selectedJenis.length > 0 && (
+                        <button
+                          onClick={() => setSelectedJenis([])}
+                          className="text-[11px] text-brand-600 dark:text-brand-400 hover:underline font-medium"
+                        >
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                    <div className="max-h-56 overflow-y-auto space-y-1 pr-1">
+                      {jenisOptions.map((j) => {
+                        const isChecked = selectedJenis.includes(j.name);
+                        return (
+                          <label
+                            key={j.name}
+                            onClick={() => toggleJenisSelection(j.name)}
+                            className="flex items-center justify-between p-2 rounded-md hover:bg-slate-50 dark:hover:bg-slate-800/60 cursor-pointer text-xs transition"
+                          >
+                            <div className="flex items-center gap-2">
+                              <div
+                                className={`w-4 h-4 rounded border flex items-center justify-center transition ${
+                                  isChecked
+                                    ? "bg-brand-600 border-brand-600 text-white"
+                                    : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
+                                }`}
+                              >
+                                {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
+                              </div>
+                              <span className={`break-words ${isChecked ? "font-medium text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"}`}>
+                                {j.name}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-slate-400 font-mono ml-2">({j.count})</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
 
             {/* Draggable Min & Max Amount Range Popover Slider */}
@@ -232,11 +354,11 @@ export default function InvoiceTable({ invoices, showCommission = false }) {
                 <button
                   className={`h-10 px-3 rounded-lg border text-xs font-medium flex items-center gap-2 transition ${
                     isAmountFiltered
-                      ? "border-brand-500 bg-brand-50 dark:bg-brand-600/10 text-brand-600 dark:text-brand-400"
+                      ? "border-brand-500 bg-brand-50 dark:bg-brand-600/10 text-brand-600 dark:text-brand-400 ring-2 ring-brand-500/20 font-semibold"
                       : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200"
                   }`}
                 >
-                  <SlidersHorizontal className="w-3.5 h-3.5 text-slate-400" />
+                  <SlidersHorizontal className={`w-3.5 h-3.5 ${isAmountFiltered ? "text-brand-600 dark:text-brand-400" : "text-slate-400"}`} />
                   <span>{getAmountButtonText()}</span>
                 </button>
               </PopoverTrigger>
@@ -272,7 +394,6 @@ export default function InvoiceTable({ invoices, showCommission = false }) {
                       step={1}
                       value={amountRangeIndex}
                       onValueChange={(val) => {
-                        // Ensure min <= max
                         if (val[0] <= val[1]) setAmountRangeIndex(val);
                       }}
                       className="relative flex w-full touch-none select-none items-center py-2 cursor-pointer"

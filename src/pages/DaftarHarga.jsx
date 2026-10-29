@@ -137,20 +137,41 @@ export default function DaftarHarga() {
   const currentTab = tabs.find((t) => t.id === active);
   const info = tabInfo[active];
 
+  const pricingSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Jasa Pengelolaan dan Pengangkutan Limbah B3 LIMBAHIN",
+    "description": "Daftar tarif dan harga pengangkutan limbah B3 medis, industri, komersil, dan produk reject di Jabodetabek berizin resmi KLHK.",
+    "brand": {
+      "@type": "Brand",
+      "name": "LIMBAHIN"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "IDR",
+      "lowPrice": "5000",
+      "offerCount": "12",
+      "priceValidUntil": "2026-12-31"
+    }
+  };
+
   return (
     <>
       <Seo
-        title="Harga Pengangkutan Limbah B3 Jabodetabek"
-        description="Cek harga pengangkutan dan pemusnahan limbah B3 per kg untuk limbah medis, industri, komersial, dan produk & bahan di Jabodetabek. Transparan, berizin, dokumen lengkap."
+        title="Daftar Harga Pengangkutan Limbah B3 Jabodetabek"
+        description="Tarif transparan pengangkutan & pemusnahan limbah B3 per kg: limbah medis RS/klinik mulai Rp 5.000/kg, limbah industri, komersil hotel, & produk reject berizin KLHK."
         path="/harga-limbah"
+        jsonLd={pricingSchema}
       />
       <section className="relative bg-gradient-to-br from-[#1a1a2e] via-[#162930] to-[#0e2229] py-20">
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "36px 36px" }} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="text-[#3cc0c9] text-sm font-semibold uppercase tracking-wider">Harga Transparan</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-3 mb-4">Harga Limbah</h1>
-            <p className="text-white/65 text-base max-w-xl mx-auto">Harga kompetitif dan transparan untuk semua jenis layanan pemusnahan limbah. *Belum termasuk PPN 11%.</p>
+            <span className="text-[#3cc0c9] text-sm font-semibold uppercase tracking-wider">Transparan & Legal</span>
+            <h1 className="text-3xl md:text-5xl font-bold text-white mt-3 mb-4">Daftar Harga Pengangkutan Limbah B3</h1>
+            <p className="text-white/65 text-base max-w-2xl mx-auto">
+              Struktur tarif resmi dan kompetitif untuk pengangkutan, pengolahan, dan sertifikasi pemusnahan limbah B3 di seluruh wilayah Jabodetabek dan Jawa Barat.
+            </p>
           </motion.div>
         </div>
       </section>

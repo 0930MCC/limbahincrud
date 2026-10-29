@@ -61,12 +61,26 @@ export default function HargaLogistik() {
     : `Halo, saya ingin tanya harga & penawaran (quotation) untuk kebutuhan logistik/pengangkutan barang saya.`;
   const waUrl = `https://api.whatsapp.com/send?phone=6281517005533&text=${encodeURIComponent(waMessage + "\n\n[BTN38]")}`;
 
+  const schemaLogistics = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Jasa Ekspedisi & Logistik Truk LIMBAHIN",
+    "provider": {
+      "@type": "Organization",
+      "name": "LIMBAHIN — PT Media Cahaya Cerah",
+      "url": "https://www.mediacahayacerah.com"
+    },
+    "description": "Kalkulator tarif sewa truk dan logistik pengangkutan CDE, CDD, Fuso rute Jabodetabek, Jawa Barat, Jawa Tengah, Jawa Timur, dan Sumatera.",
+    "areaServed": ["Jabodetabek", "Jawa Barat", "Jawa Tengah", "Jawa Timur", "Sumatera"]
+  };
+
   return (
     <>
       <Seo
-        title="Harga Logistik & Pengangkutan Limbah B3"
-        description="Estimasi tarif pengangkutan limbah B3 per wilayah dan jenis armada, dari Jabodetabek hingga luar Jawa Barat. Hitung estimasi biaya logistik Anda."
+        title="Tarif Sewa Truk & Harga Logistik Pengangkutan Barang"
+        description="Kalkulator tarif sewa truk logistik CDE, CDD, Fuso rute Jabodetabek, Jawa Barat, Jawa Tengah, Jawa Timur & Sumatera. Estimasi biaya transparan dan armada terawat."
         path="/harga-logistik"
+        jsonLd={schemaLogistics}
       />
       <section className="relative bg-gradient-to-br from-[#1a1a2e] via-[#162930] to-[#0e2229] py-20">
         <div

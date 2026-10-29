@@ -47,6 +47,7 @@ export default function Footer() {
               <li><Link to="/layanan/proses-pelayanan" className="hover:text-[#3cc0c9] transition-colors">Proses Pelayanan</Link></li>
               <li><Link to="/layanan/proses-pelayanan#pendaftaran-form" className="hover:text-[#3cc0c9] transition-colors font-semibold">Daftar Sekarang</Link></li>
               <li><Link to="/layanan/alur-limbah" className="hover:text-[#3cc0c9] transition-colors">Alur Limbah</Link></li>
+              <li><Link to="/layanan/mengapa-kami" className="hover:text-[#3cc0c9] transition-colors">Mengapa Kami</Link></li>
               <li><Link to="/layanan/partner-klien" className="hover:text-[#3cc0c9] transition-colors">Partner & Klien</Link></li>
             </ul>
           </div>

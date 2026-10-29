@@ -9,6 +9,7 @@ import {
   FolderOpen,
   HardDrive,
   CalendarClock,
+  BarChart3,
 } from "lucide-react";
 import Brand from "./Brand";
 import { useTheme } from "@/lib/ThemeContext";
@@ -20,6 +21,7 @@ import { modeMeta, modeDashboardPath } from "./ModeSwitcherDialog";
 // (chosen via the mode switcher — see ModeSwitcherDialog.jsx) just show a Dashboard link into
 // their own /app/<mode>/dashboard (a coming-soon page for now); there's nothing else to nest yet.
 const b3Dashboard = { to: modeDashboardPath("b3"), label: "Dashboard", icon: LayoutDashboard, end: true };
+const b3Rekapan = { to: "/app/rekapan", label: "Rekapan", icon: BarChart3 };
 
 const b3Sections = [
   {
@@ -113,6 +115,9 @@ export default function Sidebar({ role, mode, onRequestModeChange, onNavigate })
             <>
               <NavLink to={b3Dashboard.to} end={b3Dashboard.end} className={linkClass} onClick={onNavigate}>
                 <b3Dashboard.icon className="w-3.5 h-3.5" /> {b3Dashboard.label}
+              </NavLink>
+              <NavLink to={b3Rekapan.to} className={linkClass} onClick={onNavigate}>
+                <b3Rekapan.icon className="w-3.5 h-3.5" /> {b3Rekapan.label}
               </NavLink>
 
               {b3Sections.map((section) => (

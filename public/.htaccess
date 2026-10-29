@@ -45,6 +45,10 @@
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
+  # 4b) Legacy .html URLs -> 301 redirect to clean path
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.+)\.html$ /$1 [L,R=301]
+
   # 5) A missing FILE (anything ending in .js/.css/.png/.xml ...) is a genuine 404. Without this
   #    it would fall through to index.html with status 200 — a "soft 404" that confuses Google
   #    and breaks the app with a confusing error when an old hashed asset has been deleted.

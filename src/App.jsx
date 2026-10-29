@@ -47,6 +47,7 @@ const BeritaAcara = lazy(() => import('@/pages/BeritaAcara'));
 const JadwalCrm = lazy(() => import('@/pages/JadwalCrm'));
 const Profile = lazy(() => import('@/pages/Profile'));
 const ComingSoon = lazy(() => import('@/pages/ComingSoon'));
+const Rekapan = lazy(() => import('@/pages/Rekapan'));
 
 // Asset Records module — merged back in from the standalone asset-records app.
 // Field workers keep their own code-based session (lib/ast/workerSession.js), which is what
@@ -156,6 +157,9 @@ function App() {
                 <Route path="limbah-domestik/dashboard" element={<ComingSoon feature="limbah-domestik" />} />
                 <Route path="limbah-ekonomis/dashboard" element={<ComingSoon feature="limbah-ekonomis" />} />
                 <Route path="logistik/dashboard" element={<ComingSoon feature="logistik" />} />
+
+                <Route path="rekapan" element={<Rekapan />} />
+                <Route path="summary" element={<Navigate to="/app/rekapan" replace />} />
 
                 <Route path="cabang" element={<Cabang />} />
                 <Route path="cabang/:branchId" element={<BranchDetail />} />

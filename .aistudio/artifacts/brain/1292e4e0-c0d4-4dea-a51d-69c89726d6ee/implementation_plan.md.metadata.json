@@ -1,0 +1,6 @@
+{
+  "summary":  "Comprehensive implementation plan for the new 'Rekapan' (Summary) portal section. It outlines the architectural design, monthly and yearly aggregation workflows, partial-year date boundary detection, thorough operational and financial KPI rollups, and sidebar navigation integration.",
+  "updatedAt":  "2026-10-23T18:21:12.404817566Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

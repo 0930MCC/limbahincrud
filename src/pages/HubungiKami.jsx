@@ -34,7 +34,14 @@ export default function HubungiKami() {
       <Seo
         title="Hubungi LIMBAHIN, Konsultasi Limbah B3 Gratis"
         description="Hubungi tim LIMBAHIN di Cikarang untuk konsultasi gratis, penawaran harga, dan penjadwalan pengangkutan limbah B3 di Jakarta, Bekasi, Depok, Bogor, dan Tangerang."
-        path="/hubungi-kami"
+        path="/hubungi"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Hubungi LIMBAHIN",
+          "description": "Kontak resmi, lokasi kantor operasional di Cikarang, email, dan layanan WhatsApp konsultasi limbah B3 LIMBAHIN.",
+          "url": "https://www.mediacahayacerah.com/hubungi"
+        }}
       />
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-[#1a1a2e] via-[#1a2333] to-[#162930] py-20 md:py-28">

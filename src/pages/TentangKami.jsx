@@ -1,5 +1,5 @@
 import React from "react";
-import { Shield, Settings, BarChart3, FileText, ArrowRight, CheckCircle, LayoutDashboard, FileSignature, Siren, Truck } from "lucide-react";
+import { Shield, Settings, BarChart3, FileText, ArrowRight, LayoutDashboard, FileSignature, Siren, Truck } from "lucide-react";
 import { motion } from "framer-motion";
 import komitmenBanner from "@/assets/tentang/komitmen-kami-banner.jpg";
 import StatsBar from "@/components/home/StatsBar";
@@ -33,7 +33,14 @@ export default function TentangKami() {
       <Seo
         title="Tentang LIMBAHIN, Pengelola Limbah B3 Berizin"
         description="LIMBAHIN by PT Media Cahaya Cerah, perusahaan pengelolaan dan pengangkutan limbah B3 berizin resmi, berkantor di Cikarang dan melayani seluruh Jabodetabek."
-        path="/tentang-kami"
+        path="/tentang"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          "name": "Tentang LIMBAHIN — PT Media Cahaya Cerah",
+          "description": "Profil lengkap PT Media Cahaya Cerah (LIMBAHIN), izin operasional KLHK, armada, dan komitmen pengelolaan limbah B3 ramah lingkungan di Jabodetabek.",
+          "url": "https://www.mediacahayacerah.com/tentang"
+        }}
       />
       <section className="relative bg-gradient-to-br from-[#1a1a2e] via-[#1a2333] to-[#162930] py-20 md:py-28">
         <div className="absolute inset-0 opacity-5"><div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} /></div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Star, ArrowRight } from "lucide-react";
+import { Star } from "lucide-react";
 import QuotationForm from "@/components/home/QuotationForm";
 import Seo from "@/components/Seo";
 
@@ -39,12 +39,25 @@ const sectors = [
 ];
 
 export default function PartnerKlien() {
+  const schemaPartner = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Klien & Partner Pengelolaan Limbah B3 LIMBAHIN",
+    "description": "Daftar perusahaan, rumah sakit, klinik, dan industri di Jabodetabek yang mempercayakan pengelolaan limbah B3 kepada LIMBAHIN.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "LIMBAHIN",
+      "url": "https://www.mediacahayacerah.com"
+    }
+  };
+
   return (
     <>
       <Seo
-        title="Klien & Partner Pengelolaan Limbah B3"
-        description="Perusahaan, rumah sakit, dan klinik di Jabodetabek yang mempercayakan pengelolaan limbah B3 mereka kepada LIMBAHIN."
+        title="Klien & Partner Pengelolaan Limbah B3 Jabodetabek"
+        description="500+ perusahaan, rumah sakit, dan klinik di Jabodetabek yang mempercayakan pengangkutan dan pemusnahan limbah B3 mereka kepada LIMBAHIN."
         path="/layanan/partner-klien"
+        jsonLd={schemaPartner}
       />
       <section className="relative bg-gradient-to-br from-[#1a1a2e] via-[#162930] to-[#0e2229] py-20">
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "36px 36px" }} />

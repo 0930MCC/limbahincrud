@@ -64,9 +64,19 @@ export default function Seo({ title, description, path, image, noIndex = false, 
 
     // A noindex page must NOT carry a canonical pointing somewhere else (mixed signals), so drop it.
     // Otherwise set the page's own canonical, so Google never treats it as a copy of another URL.
-    const canonical = path && !noIndex ? `${SITE_URL}${path}` : undefined;
-    if (noIndex) removeCanonical();
-    if (canonical) {
+    let normPath = path;
+    if (!normPath && typeof window !== 'undefined') {
+      normPath = window.location.pathname;
+    }
+    if (normPath && normPath !== '/') {
+      normPath = normPath.replace(/\/+$/, '');
+      if (!normPath.startsWith('/')) normPath = '/' + normPath;
+    }
+
+    const canonical = normPath && !noIndex ? `${SITE_URL}${normPath}` : undefined;
+    if (noIndex) {
+      removeCanonical();
+    } else if (canonical) {
       upsertMeta('property', 'og:url', canonical);
       upsertCanonical(canonical);
     }
